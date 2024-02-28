@@ -1,5 +1,4 @@
 const EPS = 0.0001;
-const DT = 1;
 
 function calculateGravitationalForce(m1, m2, distance) {
   return -(m1 * m2) / (distance * distance);
@@ -16,8 +15,8 @@ function calculateDistance(body1, body2) {
   };
 }
 
-function calculateTimeScalar(coord) {
-  return coord * DT;
+function calculateTimeScalar(coord, dt) {
+  return coord * dt;
 }
 
 export { calculateGravitationalForce, calculateDistance, calculateTimeScalar };

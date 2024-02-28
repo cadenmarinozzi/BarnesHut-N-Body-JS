@@ -20,7 +20,20 @@ function createImage() {
   return ctx.createImageData(width, height);
 }
 
+function drawLine(x, y, x2, y2) {
+  ctx.strokeStyle = "rgba(255, 255, 255, 1)";
+
+  ctx.beginPath();
+  ctx.moveTo(Math.round(x), Math.round(y));
+  ctx.lineTo(Math.round(x2), Math.round(y2));
+  ctx.stroke();
+  ctx.closePath();
+}
+
 function updateImagePixel(image, x, y, r, g, b, a) {
+  x = Math.round(x);
+  y = Math.round(y);
+
   image.data[4 * (x + y * width) + 0] = r;
   image.data[4 * (x + y * width) + 1] = g;
   image.data[4 * (x + y * width) + 2] = b;
@@ -32,6 +45,8 @@ function drawImage(image) {
 }
 
 function drawBounds(x, y, width, height) {
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+
   ctx.strokeRect(
     Math.round(x),
     Math.round(y),
@@ -49,4 +64,5 @@ export {
   createImage,
   updateImagePixel,
   drawImage,
+  drawLine,
 };

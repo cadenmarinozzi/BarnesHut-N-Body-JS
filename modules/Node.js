@@ -2,11 +2,14 @@ import { calculateGravitationalForce, calculateDistance } from "Physics";
 import { drawBounds } from "Drawing";
 
 const THETA = 0.5;
+const MAX_DEPTH = 100;
 
 class Node {
-  constructor(x, y, width, height) {
+  constructor(x, y, width, height, depth = 0) {
     this.quads = [];
     this.hasQuads = false; // Keep as a variable for optimization instead of checking if quads is empty every time
+
+    this.depth = depth;
 
     this.bounds = {
       x,
@@ -31,10 +34,16 @@ class Node {
     const centerX = this.bounds.x + width;
     const centerY = this.bounds.y + height;
 
-    this.quads.push(new Node(this.bounds.x, this.bounds.y, width, height));
-    this.quads.push(new Node(centerX, this.bounds.y, width, height));
-    this.quads.push(new Node(centerX, centerY, width, height));
-    this.quads.push(new Node(this.bounds.x, centerY, width, height));
+    this.quads.push(
+      new Node(this.bounds.x, this.bounds.y, width, height, this.depth + 1)
+    );
+    this.quads.push(
+      new Node(centerX, this.bounds.y, width, height, this.depth + 1)
+    );
+    this.quads.push(new Node(centerX, centerY, width, height, this.depth + 1));
+    this.quads.push(
+      new Node(this.bounds.x, centerY, width, height, this.depth + 1)
+    );
 
     this.hasQuads = true;
   }
@@ -113,12 +122,12 @@ class Node {
       }
     }
 
-    const x = Math.round(this.bounds.x);
-    const y = Math.round(this.bounds.y);
-    const width = Math.round(this.bounds.width);
-    const height = Math.round(this.bounds.height);
-
-    drawBounds(x, y, width, height);
+    drawBounds(
+      this.bounds.x,
+      this.bounds.y,
+      this.bounds.width,
+      this.bounds.height
+    );
   }
 }
 
